@@ -5,20 +5,24 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Contract } from './contract/contract.entity';
 import { Account } from './account/account.entity';
 import { AccountModule } from './account/account.module';
+import { ContractModule } from './contract/contract.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'db',
-      port: 5432,
+      host: 'localhost', // change to db if using docker
+      port: 5433, // change to 5432 if using docker
       username: 'postgres',
       password: 'postgres',
       database: 'db',
       synchronize: true,
       entities: [Contract, Account],
     }),
-    AccountModule
+    ConfigModule.forRoot(),
+    AccountModule,
+    ContractModule
   ],
   controllers: [AppController],
   providers: [AppService],
