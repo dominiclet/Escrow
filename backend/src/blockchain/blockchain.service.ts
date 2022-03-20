@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import Web3 from "web3";
 import { AbiItem } from "web3-utils";
+import { Transaction } from "./interfaces/transaction.interface";
 import smartContractJson from "./smart-contract/Escrow.json";
 
 @Injectable()
@@ -16,17 +17,20 @@ export class BlockchainService {
         });
     }
 
-    async createContract(deployingAddress: string, escrowFrom: string, escrowTo: string) {
+    async createContract(deployingAddress: string, escrowFrom: string, escrowTo: string): Promise<Transaction> {
         var contract = new this.web3.eth.Contract(smartContractJson.abi as AbiItem[]);
         var deploy = contract.deploy({
             data: smartContractJson.bytecode,
             arguments: [escrowFrom, escrowTo],
         });
+        const deployData = deploy.encodeABI();
         const estimatedGas = await deploy.estimateGas();
-        deploy.send({
-            from: deployingAddress,
-            gas: estimatedGas,
+        const tx = {
+            gas: estimatedGas.toString(),
             gasPrice: this.gasPrice,
-        });
+            data: deployData,
+            from: deployingAddress,
+        }
+        return tx;
     }
 }
