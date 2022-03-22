@@ -27,6 +27,7 @@ const Test = () => {
             method: 'eth_sendTransaction',
             params: [tx],
         })
+        // Update database
     }
 
     return (
