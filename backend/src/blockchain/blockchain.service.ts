@@ -17,17 +17,14 @@ export class BlockchainService {
         });
     }
 
-    async createContract(deployingAddress: string, escrowFrom: string, escrowTo: string): Promise<Transaction> {
+    async createContract(deployingAddress: string, escrowFrom: string, escrowTo: string, arbitrator: string): Promise<Transaction> {
         var contract = new this.web3.eth.Contract(smartContractJson.abi as AbiItem[]);
         var deploy = contract.deploy({
             data: smartContractJson.bytecode,
-            arguments: [escrowFrom, escrowTo],
+            arguments: [escrowFrom, escrowTo, arbitrator],
         });
         const deployData = deploy.encodeABI();
-        const estimatedGas = await deploy.estimateGas();
         const tx = {
-            gas: estimatedGas.toString(),
-            gasPrice: this.gasPrice,
             data: deployData,
             from: deployingAddress,
         }

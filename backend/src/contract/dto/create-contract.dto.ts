@@ -1,5 +1,15 @@
+import { IsNotEmpty } from 'class-validator';
+
 export class CreateContractDto {
-    deployAddress: string;
+    @IsNotEmpty()
+    contractAddress: string;
+
+    @IsNotEmpty()
+    contractName: string;
+
+    @IsNotEmpty()
     fromAddress: string;
+
+    @IsNotEmpty()
     toAddress: string;
 }

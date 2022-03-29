@@ -106,4 +106,12 @@ contract Escrow {
 		arbitrator.transfer(address(this).balance);
 		currState = State.COMPLETE;
 	}
+
+	// Function to check current state
+	function getCurrState() view external returns (int _val) {
+		if (currState == State.A_OFFER) return 1;
+		if (currState == State.A_ACCEPTANCE) return 2;
+		if (currState == State.A_PERFORMANCE) return 3;
+		if (currState == State.COMPLETE) return 4;
+	}
 }

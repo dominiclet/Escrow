@@ -7,6 +7,7 @@ import { Account } from './account/account.entity';
 import { AccountModule } from './account/account.module';
 import { ContractModule } from './contract/contract.module';
 import { ConfigModule } from '@nestjs/config';
+import { BlockchainModule } from './blockchain/blockchain.module';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { ConfigModule } from '@nestjs/config';
     }),
     ConfigModule.forRoot(),
     AccountModule,
-    ContractModule
+    ContractModule,
+    BlockchainModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -9,6 +9,9 @@ export class Account {
     @Column()
     username: string;
 
-    @OneToMany(type => Contract, contract => contract.address)
-    contracts: Contract[]
+    @OneToMany(type => Contract, contract => contract.payer)
+    payerContracts: Contract[]
+
+    @OneToMany(type => Contract, contract => contract.payee)
+    payeeContracts: Contract[]
 }
