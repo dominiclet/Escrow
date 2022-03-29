@@ -30,4 +30,21 @@ export class BlockchainService {
         }
         return tx;
     }
+
+    offer(callerAddress: string, contractAddress: string, expiryTime: number): Transaction {
+        const contract = new this.web3.eth.Contract(smartContractJson.abi as AbiItem[], contractAddress);
+        const data = contract.methods.offer(expiryTime).encodeABI();
+        const tx = {
+            data: data,
+            from: callerAddress,
+            to: contractAddress,
+        }
+        return tx;
+    }
+
+    async getPayerAddress(contractAddress: string): Promise<string> {
+        const contract = new this.web3.eth.Contract(smartContractJson.abi as AbiItem[], contractAddress);
+        const payer = await contract.methods.payer().call();
+        return payer;
+    }
 }

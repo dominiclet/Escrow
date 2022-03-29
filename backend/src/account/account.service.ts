@@ -18,6 +18,11 @@ export class AccountService {
         return savedAcc;
     }
 
+    async fetchAll(): Promise<Account[]> {
+        const account = await this.accountRepository.find({});
+        return account;
+    }
+
     findOne(walletId: string): Promise<Account> {
         const account = this.accountRepository.findOneOrFail({
             walletId
