@@ -8,6 +8,7 @@ import { AccountModule } from './account/account.module';
 import { ContractModule } from './contract/contract.module';
 import { ConfigModule } from '@nestjs/config';
 import { BlockchainModule } from './blockchain/blockchain.module';
+import { SeederModule } from './seeder/seeder.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { BlockchainModule } from './blockchain/blockchain.module';
       entities: [Contract, Account],
     }),
     ConfigModule.forRoot(),
+    SeederModule,
     AccountModule,
     ContractModule,
     BlockchainModule,
