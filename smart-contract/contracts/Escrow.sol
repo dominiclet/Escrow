@@ -55,7 +55,7 @@ contract Escrow {
 
 	// Function to allow payer to withdraw offer / alter offer by withdrawing and re-offering
 	function withdrawOffer() onlyPayer external payable {
-		require(currState != State.A_ACCEPTANCE, "Cannot withdraw offer as payee has accepted your deposit");
+		require(currState == State.A_ACCEPTANCE, "Cannot withdraw offer as payee has accepted your deposit");
 		payer.transfer(address(this).balance);
 		// Contract now able to accept a new offer
 		currState = State.A_OFFER;

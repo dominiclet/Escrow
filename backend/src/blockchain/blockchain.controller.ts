@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { BlockchainService } from "./blockchain.service";
 import { CreateBlockchainContractDto } from "./dto/create-blockchain-contract.dto";
 import { OfferDto } from "./dto/offer-blockchain.dto";
+import { GenericCallDto } from "./dto/generic-call.dto";
 import { Transaction } from "./interfaces/transaction.interface";
 
 @Controller('blockchain')
@@ -16,8 +17,26 @@ export class BlockchainController {
 
     @Post('offer')
     offer(@Body() offerDto: OfferDto): Transaction {
-        const { callerAddress, contractAddress, expiryTime } = offerDto;
-        return this.blockchainService.offer(callerAddress, contractAddress, expiryTime);
+        const { callerAddress, contractAddress, expiryTime, value } = offerDto;
+        return this.blockchainService.offer(callerAddress, contractAddress, expiryTime, value);
+    }
+
+    @Post('withdrawOffer')
+    withdrawOffer(@Body() genericCallDto: GenericCallDto) {
+        const { callerAddress, contractAddress } = genericCallDto;
+        return this.blockchainService.withdrawOffer(callerAddress, contractAddress);
+    }
+
+    @Post('accept')
+    accept(@Body() genericCallDto: GenericCallDto) {
+        const { callerAddress, contractAddress } = genericCallDto;
+        return this.blockchainService.accept(callerAddress, contractAddress);
+    }
+
+    @Post('triggerDispute')
+    triggerDispute(@Body() genericCallDto: GenericCallDto) {
+        const { callerAddress, contractAddress } = genericCallDto;
+        return this.blockchainService.triggerDispute(callerAddress, contractAddress);
     }
 
     @Get(':contractAddress/payer')

@@ -14,8 +14,8 @@ import { SeederModule } from './seeder/seeder.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'db', // docker:db, local: localhost
-      port: 5432, // docker: 5432, local: depends on your system (5433)
+      host: 'localhost', // docker:db, local: localhost
+      port: 5433, // docker: 5432, local: depends on your system (5433)
       username: 'postgres',
       password: 'postgres',
       database: 'db',

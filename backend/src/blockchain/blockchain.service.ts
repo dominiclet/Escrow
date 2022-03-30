@@ -31,9 +31,43 @@ export class BlockchainService {
         return tx;
     }
 
-    offer(callerAddress: string, contractAddress: string, expiryTime: number): Transaction {
+    offer(callerAddress: string, contractAddress: string, expiryTime: number, value: number): Transaction {
         const contract = new this.web3.eth.Contract(smartContractJson.abi as AbiItem[], contractAddress);
         const data = contract.methods.offer(expiryTime).encodeABI();
+        const tx = {
+            data: data,
+            from: callerAddress,
+            to: contractAddress,
+            value: value,
+        }
+        return tx;
+    }
+
+    async withdrawOffer(callerAddress: string, contractAddress: string): Promise<Transaction> {
+        const contract = new this.web3.eth.Contract(smartContractJson.abi as AbiItem[], contractAddress);
+        const data = contract.methods.withdrawOffer().encodeABI();
+        const tx = {
+            data: data,
+            from: callerAddress,
+            to: contractAddress,
+        }
+        return tx;
+    }
+
+    accept(callerAddress: string, contractAddress: string): Transaction {
+        const contract = new this.web3.eth.Contract(smartContractJson.abi as AbiItem[], contractAddress);
+        const data = contract.methods.accept().encodeABI();
+        const tx = {
+            data: data,
+            from: callerAddress,
+            to: contractAddress,
+        }
+        return tx;
+    }
+
+    triggerDispute(callerAddress: string, contractAddress: string): Transaction {
+        const contract = new this.web3.eth.Contract(smartContractJson.abi as AbiItem[], contractAddress);
+        const data = contract.methods.triggerDispute().encodeABI();
         const tx = {
             data: data,
             from: callerAddress,
