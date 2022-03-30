@@ -1,4 +1,4 @@
-import { Injectable, UseFilters } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, UseFilters } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { AccountService } from "src/account/account.service";
 import { EntityNotFoundExceptionFilter } from "src/filters/entity-not-found-exception.filter";
@@ -53,5 +53,62 @@ export class ContractService {
             }
         });
         return contracts;
+    }
+
+    @UseFilters(EntityNotFoundExceptionFilter)
+    async offer(callerAddress: string, contractAddress: string): Promise<Contract> {
+        const contract = await this.contractRepository.findOne({
+            relations: ['payee', 'payer'],
+            where: {
+                address: contractAddress,
+            }
+        });
+        if (contract.state != ContractState.A_OFFER) {
+            throw new HttpException('Contract currently not in awaiting offer state', HttpStatus.METHOD_NOT_ALLOWED);
+        }
+        if (contract.payer.walletId != callerAddress) {
+            throw new HttpException('Method only allowed to be called by payee', HttpStatus.UNAUTHORIZED);
+        }
+        contract.state = ContractState.A_ACCEPTANCE;
+        const savedContract = await this.contractRepository.save(contract);
+        return savedContract;
+    }
+
+    @UseFilters(EntityNotFoundExceptionFilter)
+    async withdrawOffer(callerAddress: string, contractAddress: string): Promise<Contract> {
+        const contract = await this.contractRepository.findOne({
+            relations: ['payee', 'payer'],
+            where: {
+                address: contractAddress,
+            }
+        });
+        if (contract.state != ContractState.A_ACCEPTANCE) {
+            throw new HttpException('Contract currently not in awaiting acceptance state', HttpStatus.METHOD_NOT_ALLOWED);
+        }
+        if (contract.payer.walletId != callerAddress) {
+            throw new HttpException('Method only allowed to be called by payee', HttpStatus.UNAUTHORIZED);
+        }
+        contract.state = ContractState.A_OFFER;
+        const savedContract = await this.contractRepository.save(contract);
+        return savedContract;
+    }
+
+    @UseFilters(EntityNotFoundExceptionFilter)
+    async accept(callerAddress: string, contractAddress: string): Promise<Contract> {
+        const contract = await this.contractRepository.findOne({
+            relations: ['payee', 'payer'],
+            where: {
+                address: contractAddress,
+            }
+        });
+        if (contract.state != ContractState.A_ACCEPTANCE) {
+            throw new HttpException('Contract currently not in awaiting acceptance state', HttpStatus.METHOD_NOT_ALLOWED);
+        }
+        if (contract.payee.walletId != callerAddress) {
+            throw new HttpException('Method only allowed to be called by payer', HttpStatus.UNAUTHORIZED);
+        }
+        contract.state = ContractState.A_PERFORMANCE;
+        const savedContract = await this.contractRepository.save(contract);
+        return savedContract;
     }
 }

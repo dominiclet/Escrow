@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber } from "class-validator";
 
-export class OfferDto {
+export class OfferBlockchainDto {
     @IsNotEmpty()
     callerAddress: string;
 

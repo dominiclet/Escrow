@@ -12,6 +12,7 @@ import { SeederModule } from './seeder/seeder.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost', // docker:db, local: localhost
@@ -22,7 +23,6 @@ import { SeederModule } from './seeder/seeder.module';
       synchronize: true,
       entities: [Contract, Account],
     }),
-    ConfigModule.forRoot(),
     SeederModule,
     AccountModule,
     ContractModule,

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { BlockchainService } from "./blockchain.service";
 import { CreateBlockchainContractDto } from "./dto/create-blockchain-contract.dto";
-import { OfferDto } from "./dto/offer-blockchain.dto";
+import { OfferBlockchainDto } from "./dto/offer-blockchain.dto";
 import { GenericCallDto } from "./dto/generic-call.dto";
 import { Transaction } from "./interfaces/transaction.interface";
 
@@ -16,7 +16,7 @@ export class BlockchainController {
     }
 
     @Post('offer')
-    offer(@Body() offerDto: OfferDto): Transaction {
+    offer(@Body() offerDto: OfferBlockchainDto): Transaction {
         const { callerAddress, contractAddress, expiryTime, value } = offerDto;
         return this.blockchainService.offer(callerAddress, contractAddress, expiryTime, value);
     }
