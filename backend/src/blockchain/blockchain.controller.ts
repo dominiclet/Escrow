@@ -51,6 +51,18 @@ export class BlockchainController {
         return this.blockchainService.extendExpiry(callerAddress, contractAddress, proposedExpiry);
     }
 
+    @Post('confirmPerformance')
+    confirmPerformance(@Body() genericCallDto: GenericCallDto) {
+        const { callerAddress, contractAddress } = genericCallDto;
+        return this.blockchainService.confirmPerformance(callerAddress, contractAddress);
+    }
+
+    @Post('expiredWithdraw')
+    expiredWithdraw(@Body() GenericCallDto: GenericCallDto) {
+        const { callerAddress, contractAddress } = GenericCallDto;
+        return this.blockchainService.expiredWithdraw(callerAddress, contractAddress);
+    }
+
     // Read-only methods
 
     @Get(':contractAddress/parties')

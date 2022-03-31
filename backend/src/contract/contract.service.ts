@@ -130,4 +130,23 @@ export class ContractService {
         const savedContract = await this.contractRepository.save(contract);
         return savedContract;
     }
+
+    @UseFilters(EntityNotFoundExceptionFilter)
+    async completeContract(callerAddress: string, contractAddress: string): Promise<Contract> {
+        const contract = await this.contractRepository.findOne({
+            relations: ['payee', 'payer'],
+            where: {
+                address: contractAddress,
+            }
+        });
+        if (contract.state != ContractState.A_PERFORMANCE) {
+            throw new HttpException('Contract currently not in awaiting performance state', HttpStatus.METHOD_NOT_ALLOWED);
+        }
+        if (contract.payer.walletId != callerAddress) {
+            throw new HttpException('Method only allowed to be called by payer', HttpStatus.UNAUTHORIZED);
+        }
+        contract.state = ContractState.COMPLETE;
+        const savedContract = await this.contractRepository.save(contract);
+        return savedContract;
+    }
 }
