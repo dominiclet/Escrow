@@ -14,12 +14,14 @@ const Test = () => {
     }, []);
 
     const createContract = async () => {
-        const res = await axios.post("http://localhost:5000/blockchain/create", {
+        const payload = {
             deployAddress: ethProvider.selectedAddress,
             fromAddress: (document.getElementById("from") as HTMLInputElement).value, 
             toAddress: (document.getElementById("to") as HTMLInputElement).value,
             arbitrator: (document.getElementById("arbitrator") as HTMLInputElement).value,
-        });
+        }
+        console.log(payload);
+        const res = await axios.post("http://localhost:5000/blockchain/create", payload);
         const tx = res.data;
         console.log(tx);
         const txHash = await ethProvider.request({
@@ -88,6 +90,21 @@ const Test = () => {
         console.log(txHash);
     }
 
+    const proposeExpiry = async () => {
+        const res = await axios.post("http://localhost:5000/blockchain/extendExpiry", {
+            callerAddress: ethProvider.selectedAddress,
+            contractAddress: (document.getElementById("contractAddr") as HTMLInputElement).value,
+            proposedExpiry: parseInt((document.getElementById('proposedExpiry') as HTMLInputElement).value),
+        });
+        const tx = res.data;
+        console.log(tx);
+        const txHash = await ethProvider.request({
+            method: 'eth_sendTransaction',
+            params: [tx],
+        });
+        console.log(txHash);
+    }
+
     if (!txHash) 
         return (
             <div>
@@ -107,6 +124,8 @@ const Test = () => {
                         <button onClick={withdrawOffer} className="bg-button-blue h-10 w-36">Withdraw offer</button> <br/><br/>
                         <button onClick={accept} className="bg-button-blue h-10 w-36">accept offer</button> <br/><br/>
                         <button onClick={triggerDispute} className="bg-button-blue h-10 w-36">Trigger dispute</button> <br/><br/>
+                        Propose expiry: <input id="proposedExpiry" placeholder={"expiry date"} /> <br/>
+                        <button onClick={proposeExpiry} className="bg-button-blue h-10 w-36">Propose expiry</button> <br/><br/>
                     </div>
                 }
             </div>

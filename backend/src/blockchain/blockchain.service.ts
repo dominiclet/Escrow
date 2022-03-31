@@ -78,7 +78,7 @@ export class BlockchainService {
 
     extendExpiry(callerAddress: string, contractAddress: string, proposedExpiry: number): Transaction {
         const contract = new this.web3.eth.Contract(smartContractJson.abi as AbiItem[], contractAddress);
-        const data = contract.methods.extendExpiry(proposedExpiry).encodeABI();
+        const data = contract.methods.proposeExtendExpiry(proposedExpiry).encodeABI();
         const tx = {
             data: data,
             from: callerAddress,
@@ -103,5 +103,17 @@ export class BlockchainService {
         const contract = new this.web3.eth.Contract(smartContractJson.abi as AbiItem[], contractAddress);
         const expiryTime = await contract.methods.expiryTime().call();
         return expiryTime;
+    }
+
+    async getPayerProposedExpiry(contractAddress: string) {
+        const contract = new this.web3.eth.Contract(smartContractJson.abi as AbiItem[], contractAddress);
+        const proposedExpiry = await contract.methods.payerProposedExtendedExpiry().call();
+        return proposedExpiry;
+    }
+
+    async getPayeeProposedExpiry(contractAddress: string) {
+        const contract = new this.web3.eth.Contract(smartContractJson.abi as AbiItem[], contractAddress);
+        const proposedExpiry = await contract.methods.payeeProposedExtendedExpiry().call();
+        return proposedExpiry;
     }
 }

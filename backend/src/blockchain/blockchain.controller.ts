@@ -7,6 +7,7 @@ import { Transaction } from "./interfaces/transaction.interface";
 import { ContractParties } from "./interfaces/contract-parties.interface";
 import { ExtendExpiryDto } from "./dto/extend-expiry.dto";
 import { isContractAddressInBloom } from "web3-utils";
+import { ProposedExpiries } from "./interfaces/proposed-expiries.interface";
 
 @Controller('blockchain')
 export class BlockchainController {
@@ -65,5 +66,15 @@ export class BlockchainController {
     @Get(':contractAddress/expiryTime')
     getExpiryTime(@Param('contractAddress') contractAddress: string): Promise<number> {
         return this.blockchainService.getContractExpiry(contractAddress);
+    }
+
+    @Get(':contractAddress/proposedExpiries')
+    async getProposedExpiries(@Param('contractAddress') contractAddress: string): Promise<ProposedExpiries> {
+        const payerProposed = await this.blockchainService.getPayerProposedExpiry(contractAddress);
+        const payeeProposed = await this.blockchainService.getPayeeProposedExpiry(contractAddress);
+        return {
+            payerProposed,
+            payeeProposed,
+        };
     }
 }
