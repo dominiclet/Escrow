@@ -35,6 +35,18 @@ var currentUser = John
 
 const Index = () => {
 
+    // get wallet id
+    const [walletId, setWalletId] = useState<Account>();
+    useEffect(() => {
+        const fetchUser = async() => {
+            var accounts = await ethereum.request<string[]>( {method: 'eth_requestAccounts'});
+            if (accounts) {
+                return accounts[0]
+            }
+        }
+        fetchUser().then(res => setWalletId(res));
+    }, [])
+
     /*
     // get user's walletId and account
     const [walletId, setWalletId] = useState<string>();
@@ -51,24 +63,36 @@ const Index = () => {
     }
     loadMetamask()
     */
+/*
+    // get user account
+    const [user, setUser] = useState<Account>();
+    useEffect(() => {
+        axios.get(`http://localhost:5000/account/${walletId}`, {})
+        .then(res => {
+            setUser(res)
+        })
+    })
+*/
 
     // get payer contracts 
+    const [payerDataLoaded, setPayerDataLoaded] = useState<boolean>();
     const [payerContractData, setPayerContractData] = useState<Array<Contract>>();
     useEffect(() => {
         axios.get(`http://localhost:5000/contract/payer/${currentUser.walletId}`, {})
         .then(res => {
             setPayerContractData(res.data);
-            console.log(res)
+            setPayerDataLoaded(true);
         })
     }, [])
     
     // get payee contracts
+    const [payeeDataLoaded, setPayeeDataLoaded] = useState<boolean>();
     const [payeeContractData, setPayeeContractData] = useState<Array<Contract>>();
     useEffect(() => {
         axios.get(`http://localhost:5000/contract/payee/${currentUser.walletId}`, {})
         .then(res => {
             setPayeeContractData(res.data);
-            console.log(res)
+            setPayeeDataLoaded(true);
         })
     }, [])
 
@@ -99,10 +123,16 @@ const Index = () => {
                         CREATE A NEW CONTRACT
                     </button>
                 </div>
-                <div className="p-10">
-                    <Table role="Purchaser" contractDetails={testContractDetails} user={currentUser}/>
-                    <Table role="Service Provider" contractDetails={testContractDetails} user={currentUser}/>
-                </div>
+                {(payeeDataLoaded && payerDataLoaded) ?
+                    <div className="p-10">
+                        <Table role="Purchaser" contractDetails={payerContractData} user={currentUser}/>
+                        <Table role="Service Provider" contractDetails={payeeContractData} user={currentUser}/>
+                    </div>
+                    :
+                    <div>
+                        <h1>Loading...</h1>
+                    </div>
+                }
             </div>
         </div>
     )
