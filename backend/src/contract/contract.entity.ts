@@ -5,7 +5,8 @@ export enum ContractState {
     A_OFFER,
     A_ACCEPTANCE,
     A_PERFORMANCE,
-    COMPLETE
+    COMPLETE,
+    DISPUTE,
 }
 
 @Entity()

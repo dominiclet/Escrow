@@ -49,6 +49,8 @@ contract Escrow {
 		require(currState == State.A_OFFER, "Contract not accepting offer");
 		require(msg.value > 0, "Please deposit a non-zero amount");
 		require(_expiryTime > block.timestamp, "expiryTime must be a future time");
+		// Update expiry time
+		expiryTime = _expiryTime;
 		// Payee will now be allowed to accept payer's offer of deposit
 		currState = State.A_ACCEPTANCE;
 	}

@@ -41,4 +41,10 @@ export class ContractController {
         const { callerAddress, contractAddress } = acceptDto;
         return this.contractService.accept(callerAddress, contractAddress);
     }
+
+    @Post('triggerDispute')
+    triggerDispute(@Body() genericCallDto: GenericContractCallDto): Promise<Contract> {
+        const { callerAddress, contractAddress } = genericCallDto;
+        return this.contractService.triggerDispute(callerAddress, contractAddress);
+    }
 }
