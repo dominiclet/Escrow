@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@metamask/providers": "^8.1.1"
+  }
+}
