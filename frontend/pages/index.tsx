@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
-import SideMenu from '../components/SideMenu'
-import Dashboard from '../components/Dashboard'
-import { useWeb3 } from "@3rdweb/hooks"
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useWeb3 } from "@3rdweb/hooks";
+import axios from 'axios';
 
 export default function Home() {
     const { address, connectWallet } = useWeb3();
+    const router = useRouter();
+
+    const goToDasboard = () => {
+        router.push("/dashboard")
+    }
+
     return (
         <>
             {address ? 
-                <div className="flex flex-row h-screen mx-auto pt:mt-0 bg-background">
-                    <SideMenu username="hello"/>
-                    <Dashboard/>
-                </div>
+                (goToDasboard())
                 :
                 (
                 <div className="flex flex-col h-screen mx-auto items-center justify-center">
