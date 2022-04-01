@@ -16,6 +16,7 @@ export interface UpdateContractBackendParams {
 interface Props {
     isOpen: boolean,
     onRequestClose: () => void,
+    // Transaction hash is passed via a ref 
     txHash: MutableRefObject<string|null>,
     updateBackend: (contractAddress: string, fromAddress: string, toAddress?: string, contractName?: string) => Promise<boolean>;
     provider: EthProvider;
@@ -29,7 +30,6 @@ interface Props {
 const ConfirmTransactionModal = (props: Props) => {
     const [transactionComplete, setTransactionComplete] = useState<boolean>(false);
     const [error, setError] = useState<boolean>(false);
-    console.log(props.txHash.current);
 
     // Wrapper around onRequestClose to disallow user from closing before transaction goes through
     const closeModal = () => {
@@ -44,11 +44,9 @@ const ConfirmTransactionModal = (props: Props) => {
         if (props.contractBackendParams) {
             const { fromAddress, toAddress, contractName } = props.contractBackendParams.current;
             success = await props.updateBackend(contractAddress, fromAddress, toAddress, contractName);
-            console.log("LKDJSFLKJSD")
         } else {
             success = await props.updateBackend(props.contractAddress, props.fromAddress);
         }
-        console.log(success);
         if (success) 
             setTransactionComplete(true);
         else
