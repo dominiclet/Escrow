@@ -13,7 +13,11 @@ export class AccountService {
 
     async create(account: CreateAccount): Promise<Account> {
         // Consider checking if walletID is valid here
-        const newAccount = this.accountRepository.create(account);
+        const save = {
+            walletId: account.walletId.toLowerCase(),
+            username: account.username,
+        }
+        const newAccount = this.accountRepository.create(save);
         const savedAcc = await this.accountRepository.save(newAccount);
         return savedAcc;
     }

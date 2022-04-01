@@ -16,41 +16,41 @@ export class ContractController {
 
     @Get('payee/:walletId')
     getPayeeContracts(@Param('walletId') walletId: string): Promise<Contract[]> {
-        return this.contractService.getPayeeContracts(walletId);
+        return this.contractService.getPayeeContracts(walletId.toLowerCase());
     }
 
     @Get('payer/:walletId')
     getPayerContracts(@Param('walletId') walletId: string): Promise<Contract[]> {
-        return this.contractService.getPayerContracts(walletId);
+        return this.contractService.getPayerContracts(walletId.toLowerCase());
     }
 
     @Post('offer')
     offer(@Body() offerDto: GenericContractCallDto): Promise<Contract> {
-        const { callerAddress, contractAddress } = offerDto;
-        return this.contractService.offer(callerAddress, contractAddress);
+        const { fromAddress, contractAddress } = offerDto;
+        return this.contractService.offer(fromAddress.toLowerCase(), contractAddress.toLowerCase());
     }
     
     @Post('withdrawOffer')
     withdrawOffer(@Body() offerDto: GenericContractCallDto): Promise<Contract> {
-        const { callerAddress, contractAddress } = offerDto;
-        return this.contractService.withdrawOffer(callerAddress, contractAddress);
+        const { fromAddress, contractAddress } = offerDto;
+        return this.contractService.withdrawOffer(fromAddress.toLowerCase(), contractAddress.toLowerCase());
     }
 
     @Post('accept')
     accept(@Body() acceptDto: GenericContractCallDto): Promise<Contract> {
-        const { callerAddress, contractAddress } = acceptDto;
-        return this.contractService.accept(callerAddress, contractAddress);
+        const { fromAddress, contractAddress } = acceptDto;
+        return this.contractService.accept(fromAddress.toLowerCase(), contractAddress.toLowerCase());
     }
 
     @Post('triggerDispute')
     triggerDispute(@Body() genericCallDto: GenericContractCallDto): Promise<Contract> {
-        const { callerAddress, contractAddress } = genericCallDto;
-        return this.contractService.triggerDispute(callerAddress, contractAddress);
+        const { fromAddress, contractAddress } = genericCallDto;
+        return this.contractService.triggerDispute(fromAddress.toLowerCase(), contractAddress.toLowerCase());
     }
 
     @Post('completeContract')
     completeContract(@Body() genericCallDto: GenericContractCallDto): Promise<Contract> {
-        const { callerAddress, contractAddress } = genericCallDto;
-        return this.contractService.completeContract(callerAddress, contractAddress);
+        const { fromAddress, contractAddress } = genericCallDto;
+        return this.contractService.completeContract(fromAddress.toLowerCase(), contractAddress.toLowerCase());
     }
 }

@@ -2,7 +2,7 @@ import { IsNotEmpty } from "class-validator";
 
 export class GenericContractCallDto {
     @IsNotEmpty()
-    callerAddress: string;
+    fromAddress: string;
 
     @IsNotEmpty()
     contractAddress: string;

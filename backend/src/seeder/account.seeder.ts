@@ -29,7 +29,7 @@ export class SeederService implements OnApplicationBootstrap {
 
     async seed(): Promise<any> {
         const accounts = [{
-                walletId: "0x6ccB52CfA25c80D206658da74A9c1B19D1C33702",
+                walletId: "0x6ccB52CfA25c80D206658da74A9c1B19D1C33702".toLowerCase(),
                 username: "Dominic"
             }, 
             {
@@ -46,7 +46,7 @@ export class SeederService implements OnApplicationBootstrap {
             username: "Djordje",
         });
         const john = this.accountRepository.create({
-            walletId: "0x0fB0A65ca2c3f9B35d6803cFf13C01B7624439d7",
+            walletId: "0x0fB0A65ca2c3f9B35d6803cFf13C01B7624439d7".toLowerCase(),
             username: "John"
         });
         const jayesh = this.accountRepository.create({

@@ -1,0 +1,14 @@
+.content {
+    height: 400px;
+    width: 600px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    border-width: 1px;
+    border-color: grey;
+    border-radius: 5px;
+}

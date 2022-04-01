@@ -17,13 +17,13 @@ export class ContractService {
     @UseFilters(EntityNotFoundExceptionFilter)
     async create(createContract: CreateContract): Promise<Contract> {
         const { contractAddress, contractName, fromAddress, toAddress } = createContract;
-        const payer = await this.accountService.findOne(fromAddress);
-        const payee = await this.accountService.findOne(toAddress);
+        const payer = await this.accountService.findOne(fromAddress.toLowerCase());
+        const payee = await this.accountService.findOne(toAddress.toLowerCase());
         const contract = this.contractRepository.create({
             payer: payer,
             payee: payee,
             name: contractName,
-            address: contractAddress,
+            address: contractAddress.toLowerCase(),
             state: ContractState.A_OFFER,
         });
         const newContract = await this.contractRepository.save(contract);

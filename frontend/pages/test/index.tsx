@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import { EthProvider } from "../../interfaces/EthProvider";
 import axios from "axios";
-import ConfirmTransaction from "../../components/ConfirmTransaction";
 import { maticToWeiInHex } from "../../lib/blockchain";
+import ConfirmTransactionModal, { UpdateContractBackendParams } from "../../components/ConfirmTransactionPopup/ConfirmTransactionModal";
+import { useRef } from "react";
+import { createContractApi } from "../../lib/contract-api";
 
 const Test = () => {
     const [ethProvider, setEthProvider] = useState<EthProvider|null>();
-    const [txHash, setTxHash] = useState<string|null>();
+    const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
+    const createContractParams = useRef<UpdateContractBackendParams>();
+    const transaction = useRef<string|null>();
 
     useEffect(() => {
         const ethProv = (window as any).ethereum as EthProvider;
@@ -28,9 +32,20 @@ const Test = () => {
             method: 'eth_sendTransaction',
             params: [tx],
         });
-        setTxHash(txHash);
-
+        
+        // Pass variable inputs to child modal
+        transaction.current = txHash;
+        createContractParams.current = {
+            fromAddress: (document.getElementById("from") as HTMLInputElement).value, 
+            toAddress: (document.getElementById("to") as HTMLInputElement).value,
+            contractName: (document.getElementById("name") as HTMLInputElement).value,
+        }
+        popup();
+        
         // Update database
+    }
+
+    const createContractUpdateBackend = async (contractAddress) => {
     }
 
     const callOffer = async () => {
@@ -89,7 +104,6 @@ const Test = () => {
         });
         console.log(txHash);
     }
-
     const proposeExpiry = async () => {
         const res = await axios.post("http://localhost:5000/blockchain/extendExpiry", {
             callerAddress: ethProvider.selectedAddress,
@@ -105,33 +119,48 @@ const Test = () => {
         console.log(txHash);
     }
 
-    if (!txHash) 
-        return (
-            <div>
-                <h1>Test page</h1>
-                {ethProvider && 
-                    <div>
-                        Connected to metamask: {ethProvider.isMetaMask.toString()} <br/>
-                        Address (from Ethereum provider): {ethProvider.selectedAddress} <br/>
-                        Transaction from: <input id="from" placeholder={"from address"} /> <br/>
-                        Transaction to: <input id="to" placeholder={"to address"} /> <br/>
-                        Arbitrator: <input id="arbitrator" placeholder={"arbitrator's address"} /> <br />
-                        <button onClick={createContract} className="bg-button-blue h-10 w-36">Deploy contract</button>
-                        <h2>For calling functions</h2>
-                        Contract address: <input id="contractAddr" placeholder={"address"} /> <br/>
-                        Offer amount: <input id="offeramt" placeholder={"amount"} /> <br/>
-                        <button onClick={callOffer} className="bg-button-blue h-10 w-36">Call offer</button> <br/> <br/>
-                        <button onClick={withdrawOffer} className="bg-button-blue h-10 w-36">Withdraw offer</button> <br/><br/>
-                        <button onClick={accept} className="bg-button-blue h-10 w-36">accept offer</button> <br/><br/>
-                        <button onClick={triggerDispute} className="bg-button-blue h-10 w-36">Trigger dispute</button> <br/><br/>
-                        Propose expiry: <input id="proposedExpiry" placeholder={"expiry date"} /> <br/>
-                        <button onClick={proposeExpiry} className="bg-button-blue h-10 w-36">Propose expiry</button> <br/><br/>
-                    </div>
-                }
-            </div>
-        );
+    const popup = () => {
+        setModalIsOpen(true);
+    }
+
+    const updateBackend = async () => {
+        await new Promise(() => setTimeout(() => {console.log("Slept for 3 secs")}, 3000));
+        return true;
+    }
+
     return (
-        <ConfirmTransaction txHash={txHash} provider={ethProvider} />
+        <div>
+            <h1>Test page</h1>
+            {ethProvider && 
+                <div>
+                    Connected to metamask: {ethProvider.isMetaMask.toString()} <br/>
+                    Address (from Ethereum provider): {ethProvider.selectedAddress} <br/>
+                    Contract name: <input id="name" placeholder="Contract name" /> <br/>
+                    Transaction from: <input id="from" placeholder={"from address"} /> <br/>
+                    Transaction to: <input id="to" placeholder={"to address"} /> <br/>
+                    Arbitrator: <input id="arbitrator" placeholder={"arbitrator's address"} /> <br />
+                    <button onClick={createContract} className="bg-button-blue h-10 w-36">Deploy contract</button>
+                    <h2>For calling functions</h2>
+                    Contract address: <input id="contractAddr" placeholder={"address"} /> <br/>
+                    Offer amount: <input id="offeramt" placeholder={"amount"} /> <br/>
+                    <button onClick={callOffer} className="bg-button-blue h-10 w-36">Call offer</button> <br/> <br/>
+                    <button onClick={withdrawOffer} className="bg-button-blue h-10 w-36">Withdraw offer</button> <br/><br/>
+                    <button onClick={accept} className="bg-button-blue h-10 w-36">accept offer</button> <br/><br/>
+                    <button onClick={triggerDispute} className="bg-button-blue h-10 w-36">Trigger dispute</button> <br/><br/>
+                    Propose expiry: <input id="proposedExpiry" placeholder={"expiry date"} /> <br/>
+                    <button onClick={proposeExpiry} className="bg-button-blue h-10 w-36">Propose expiry</button> <br/><br/>
+                    <button onClick={popup} className="bg-button-blue h-10 w-36">Pop up</button> <br/><br/>
+                    <ConfirmTransactionModal 
+                        contractBackendParams={createContractParams}
+                        provider={ethProvider} 
+                        updateBackend={createContractApi} 
+                        txHash={transaction} 
+                        isOpen={modalIsOpen} 
+                        onRequestClose={() => {setModalIsOpen(false)}} 
+                    />
+                </div>
+            }
+        </div>
     );
 }
 
