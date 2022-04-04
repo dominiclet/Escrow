@@ -3,6 +3,7 @@ import {useEffect, useState} from 'react';
 import Table from './Table';
 import { apiRoot } from '../config';
 import { Account, Contract, ContractState } from '../interfaces/DashboardDetails';
+import { useRouter } from 'next/router';
 
 ////////////////////// test data ///////////////////////
 
@@ -12,7 +13,7 @@ var Richardt: Account = {
 }
 
 var John: Account = {
-    walletId: "0x0fB0A65ca2c3f9B35d6803cFf13C01B7624439d7",
+    walletId: "0x0fb0a65ca2c3f9b35d6803cff13c01b7624439d7",
     username: "John"
 }
 var Jayesh: Account = {
@@ -38,18 +39,16 @@ interface Props {
 }
 
 const Dashboard = (props: Props) => {
+    const router = useRouter();
+
     // get payer contracts 
     const [payerDataLoaded, setPayerDataLoaded] = useState<boolean>();
     const [payerContractData, setPayerContractData] = useState<Array<Contract>>();
     useEffect(() => {
-        axios.get(`${apiRoot}/contract/payer/${currentUser.walletId}`, {})
+        axios.get(`${apiRoot}/contract/payer/${props.walletId}`, {})
         .then(res => {
             setPayerContractData(res.data);
             setPayerDataLoaded(true);
-            console.log(res.data);
-            console.log(currentUser.walletId);
-            console.log(props.walletId);
-            console.log(props.walletId === currentUser.walletId);
         })
     }, [])
     
@@ -68,7 +67,7 @@ const Dashboard = (props: Props) => {
     const [userLoaded, setUserLoaded] = useState<boolean>();
     const [user, setUser] = useState<Account>();
     useEffect(() => {
-        axios.get(`${apiRoot}/account/${currentUser.walletId}`, {})
+        axios.get(`${apiRoot}/account/${props.walletId}`, {})
         .then(res => {
             setUser(res.data);
             setUserLoaded(true);
@@ -78,8 +77,9 @@ const Dashboard = (props: Props) => {
     // logout button function
     
     // create a new contract button function
-
-    // view contract button function
+    const createContract = () => {
+        router.push("/create");
+    }
 
     return (
         (payeeDataLoaded && payerDataLoaded && userLoaded ?
@@ -105,6 +105,7 @@ const Dashboard = (props: Props) => {
                         <button
                             className="self-center text-white bg-gray hover:bg-black 
                             rounded-full px-4 py-4 text-sm"
+                            onClick={createContract}
                             >
                             CREATE A NEW CONTRACT
                         </button>

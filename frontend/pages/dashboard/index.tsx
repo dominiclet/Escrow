@@ -25,14 +25,12 @@ const Index = () => {
     return (
         (walletIdLoaded ? 
             <div>
-                <Dashboard walletId={walletId}/>
-                <h1>{walletId}</h1>                
+                <Dashboard walletId={walletId.toLowerCase()}/>
             </div>
 
             :
             <h1>Loading...</h1>
         )
-        
     )
 }   
 

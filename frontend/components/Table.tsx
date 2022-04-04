@@ -1,5 +1,5 @@
-import { userInfo } from "os";
 import { Account, Contract, ContractState } from "../interfaces/DashboardDetails";
+import {useRouter} from 'next/router';
 
 interface Props {
     role: string;
@@ -22,7 +22,7 @@ const contractStateDisplay = (state: ContractState): string => {
 
 const Table = (props: Props) => {
 
-    // add view button function
+    // view button function
 
     // filter contracts depending on whether table is to show user as payer or payee
     /*
