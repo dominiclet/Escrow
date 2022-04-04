@@ -57,6 +57,7 @@ export class ContractService {
 
     async getContract(contractId: string):Promise<Contract>{
         const contract = await this.contractRepository.findOne({
+            relations: ['payee', 'payer'],
             where: {
                 address: contractId,
             }

@@ -1,5 +1,4 @@
-import StepperComponent from "../../../components/StepperComponent";
-import AccountInfo from "../../../components/AccountInfo";
+import IndivContract from "../../../components/IndivContract";
 import {useRouter} from 'next/router';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -37,85 +36,16 @@ const Contract =  () => {
 	}, [router.isReady]);
 
     return (
-        ((contractData === undefined) ? 
-            <div>
-                <h1>Loading Contract Data...</h1>
-            </div>
+        ((walletId === undefined) ?
+            <div>Please connect Metamask</div>
             :
-            <div className="flex h-screen w-screen bg-background">
-                <div className="flex flex-col w-screen m-10">
-                    <div className="flex flex-row flow-root p-10">
-                        <h1 className="float-left font-bold text-xl">Contract Overview</h1>
-                        <AccountInfo walletId={walletId}/>
-                    </div>
-                    <div className="flex flex-col align-center m-10">
-                        <table className="bg-[#FFF] w-full">
-                            <thead>
-                                <tr className="text-md font-semibold tracking-wide text-left text-gray-900 uppercase border-b border-gray-600">
-                                    <th className="px-4 py-3">Contract Information</th>
-                                    <th className="px-4 py-3"></th>
-                                </tr>
-                            </thead>
-                            <tbody className="white">
-                                <tr className="text-gray-700">
-                                    <td className="px-4 py-3">
-                                        <div className="flex items-center text-sm">
-                                            <p className="font-semibold text-black font-semibold">Contract Name</p>
-                                        </div>
-                                    </td>                    
-                                    <td className="px-4 py-3 text-xs">
-                                        <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-100 rounded-sm">{contractData.name}</span>
-                                    </td>
-                                </tr>
-                                <tr className="text-gray-700">
-                                    <td className="px-4 py-3">
-                                        <div className="flex items-center text-sm">
-                                            <p className="font-semibold text-black font-semibold">Counter Party Name</p>
-                                        </div>
-                                    </td>                    
-                                    <td className="px-4 py-3 text-xs">
-                                        <span className="px-2 py-1 font-semibold leading-tight text-green-700 bg-green-50 rounded-sm">{contractData.payer}</span>
-                                    </td>
-                                </tr>
-                                <tr className="text-gray-700">
-                                    <td className="px-4 py-3">
-                                        <div className="flex items-center text-sm">
-                                            <p className="font-semibold text-black font-semibold">Contract Address</p>
-                                        </div>
-                                    </td>                    
-                                    <td className="px-4 py-3 text-xs">
-                                        <span className="px-2 py-1 font-medium leading-tight text-green-700 bg-green-20 rounded-sm">{contractData.address}</span>
-                                    </td>
-                                </tr>
-                                <tr className="text-gray-700">
-                                    <td className="px-4 py-3">
-                                        <div className="flex items-center text-sm">
-                                            <p className="font-semibold text-black font-semibold">Completion Date</p>
-                                        </div>
-                                    </td>                    
-                                    <td className="px-4 py-3 text-xs">
-                                        <span className="px-2 py-1 font-medium leading-tight text-green-700 bg-green-20 rounded-sm">{contractData.expiry}</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <tbody className="flex flex-row justify-center">
-                            </tbody>
-                        </table>
-
-                        <div className="bg-[#FFF] w-full mt-10">
-                            <div className="text-gray-700">
-                                <p className="font-semibold text-black font-semibold px-4 py-3">Current Contract State</p>          
-                            </div>
-                            <StepperComponent state={contractData.state}/>
-                        </div>          
-                        <div className="bg-[#FFF] w-full mt-10 text-gray-700">
-                            <div className="px-4 py-3">
-                                <p className="justify-center font-semibold text-black font-semibold">Actions to be Taken</p>
-                            </div>                    
-                        </div>
-                    </div>
+            ((contractData === undefined) ? 
+                <div>
+                    <h1>Loading Contract Data...</h1>
                 </div>
-            </div>
+                :
+                <IndivContract walletId={walletId} contract={contractData}/>
+            )
         )
     )
 }

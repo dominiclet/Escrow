@@ -90,7 +90,7 @@ const Dashboard = (props: Props) => {
                 <div className="flex flex-col w-screen m-10">
                     <div className="flex flex-row flow-root p-10">
                         <p className="float-left font-bold text-xl">Overview</p>
-                        <AccountInfo walletId={props.walletId}/>
+                        <AccountInfo user={user}/>
                     </div>
                     <div className="flex justify-center">
                         <button
