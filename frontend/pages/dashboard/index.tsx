@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Dashboard from '../../components/Dashboard'
+import { EthProvider } from '../../interfaces/EthProvider';
 
 const Index = () => {
 
@@ -8,7 +9,7 @@ const Index = () => {
     const [walletId, setWalletId] = useState<string>();
     useEffect(() => {
         const fetchUser = async() => {
-            var accounts = await ethereum.request<string[]>( {method: 'eth_requestAccounts'});
+            var accounts = await ((window as any).ethereum as EthProvider).request( {method: 'eth_requestAccounts'});
             if (accounts) {
                 return accounts[0]
             }

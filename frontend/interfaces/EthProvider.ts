@@ -7,5 +7,5 @@ export interface EthProvider {
 
 interface Request {
     method: string,
-    params: string[],
+    params?: string[],
 }
