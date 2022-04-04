@@ -23,6 +23,10 @@ const contractStateDisplay = (state: ContractState): string => {
 const Table = (props: Props) => {
 
     // view button function
+    const router = useRouter();
+    const view = () => {
+        router.push(`/contract/${props.contractDetails["address"]}`)
+    };
 
     // filter contracts depending on whether table is to show user as payer or payee
     /*
