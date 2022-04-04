@@ -18,7 +18,7 @@ import { SeederModule } from './seeder/seeder.module';
       host: 'localhost', // docker:db, local: localhost
       port: 5433, // docker: 5432, local: depends on your system (5433)
       username: 'postgres',
-      password: 'postgres',
+      password: '  ',
       database: 'db',
       synchronize: true,
       entities: [Contract, Account],

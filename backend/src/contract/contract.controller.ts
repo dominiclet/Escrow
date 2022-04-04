@@ -24,6 +24,11 @@ export class ContractController {
         return this.contractService.getPayerContracts(walletId.toLowerCase());
     }
 
+    @Get(':contractId')
+    getContract(@Param('contractId') contractId:string): Promise<Contract>{
+        return this.contractService.getContract(contractId.toLowerCase());
+    }
+
     @Post('offer')
     offer(@Body() offerDto: GenericContractCallDto): Promise<Contract> {
         const { fromAddress, contractAddress } = offerDto;

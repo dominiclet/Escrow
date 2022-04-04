@@ -24,8 +24,8 @@ const Table = (props: Props) => {
 
     // view button function
     const router = useRouter();
-    const view = () => {
-        router.push(`/contract/${props.contractDetails["address"]}`)
+    const view = (address:string) => {
+        router.push(`/contract/${address}`)
     };
 
     // filter contracts depending on whether table is to show user as payer or payee
@@ -84,7 +84,8 @@ const Table = (props: Props) => {
                                     </td>                                
                                     <td className="px-4 py-3 text-sm">
                                         <button className="self-center text-white bg-gray hover:bg-black 
-                                            rounded-full px-4 py-2 text-sm">
+                                            rounded-full px-4 py-2 text-sm"
+                                            onClick={() => view(contract.address)}>
                                             View
                                         </button>
                                     </td>

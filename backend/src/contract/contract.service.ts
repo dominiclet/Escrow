@@ -55,6 +55,15 @@ export class ContractService {
         return contracts;
     }
 
+    async getContract(contractId: string):Promise<Contract>{
+        const contract = await this.contractRepository.findOne({
+            where: {
+                address: contractId,
+            }
+        });
+        return contract;
+    }
+
     @UseFilters(EntityNotFoundExceptionFilter)
     async offer(callerAddress: string, contractAddress: string): Promise<Contract> {
         const contract = await this.contractRepository.findOne({

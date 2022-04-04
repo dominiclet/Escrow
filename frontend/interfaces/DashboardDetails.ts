@@ -7,8 +7,8 @@ export enum ContractState {
     A_OFFER,
     A_ACCEPTANCE,
     A_PERFORMANCE,
-    COMPLETE,
     DISPUTES,
+    COMPLETE,
 }
 
 export interface Contract {
@@ -17,4 +17,5 @@ export interface Contract {
     name:string; 
     address:string; 
     state:ContractState;
+    expiry:string;
 }

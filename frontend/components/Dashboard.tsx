@@ -4,6 +4,7 @@ import Table from './Table';
 import { apiRoot } from '../config';
 import { Account, Contract, ContractState } from '../interfaces/DashboardDetails';
 import { useRouter } from 'next/router';
+import AccountInfo from './AccountInfo';
 
 ////////////////////// test data ///////////////////////
 
@@ -20,10 +21,12 @@ var Jayesh: Account = {
     walletId: "0x83457",
     username: "Jayesh"
 }
+/*
 var testContractDetails: Array<Contract> = Array(
     {"payer": John, "payee": Jayesh, "name": "Contract for stripper", "address":"0x12345", "state": ContractState.A_ACCEPTANCE},
     {"payer": Jayesh, "payee": John, "name": "Contract for goods", "address":"0x42342", "state": ContractState.COMPLETE},
 );
+*/
 
 var accountDetails: Array<Account> = Array(
     {"walletId": "0x28341234", "username": "john"},
@@ -87,19 +90,7 @@ const Dashboard = (props: Props) => {
                 <div className="flex flex-col w-screen m-10">
                     <div className="flex flex-row flow-root p-10">
                         <p className="float-left font-bold text-xl">Overview</p>
-                        <div className="float-right">
-                            <div className="grid grid-cols-3 gap-4">
-                                <p className="flex justify-end">{user.username}</p>
-                                <p className="flex jusitfy-end">{props.walletId.slice(0,5) + '...' + props.walletId.slice(-3)}</p>
-                                <button 
-                                    className="text-black bg-red-300
-                                    hover:bg-red-400 focus:ring-4 focus:ring-transparent 
-                                    font-medium rounded-full text-base w-full sm:w-auto text-center"
-                                    >
-                                    Logout
-                                </button>
-                            </div>
-                        </div>
+                        <AccountInfo walletId={props.walletId}/>
                     </div>
                     <div className="flex justify-center">
                         <button
@@ -111,8 +102,8 @@ const Dashboard = (props: Props) => {
                         </button>
                     </div>
                     <div className="p-10">
-                        <Table role="Purchaser" contractDetails={payerContractData} user={currentUser}/>
-                        <Table role="Service Provider" contractDetails={payeeContractData} user={currentUser}/>
+                        <Table role="Purchaser" contractDetails={payerContractData} user={user}/>
+                        <Table role="Service Provider" contractDetails={payeeContractData} user={user}/>
                     </div>
                 </div>
             </div>            

@@ -21,14 +21,11 @@ const Index = () => {
         });
     }, [])
 
-
-
     return (
         (walletIdLoaded ? 
             <div>
                 <Dashboard walletId={walletId.toLowerCase()}/>
             </div>
-
             :
             <h1>Loading...</h1>
         )
