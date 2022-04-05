@@ -35,28 +35,43 @@ const useWallet = () => {
                     const res = await axios.get(`${apiRoot}/account/${ethProvider.selectedAddress}`);
                 } catch (e) {
                     console.log(e);
-                    router.push("/create");
+                    if (e.response.status == 404)
+                        router.push("/signup");
                 }
+
+                // If current page is registration page, redirect to dashbaord
+                if (router.pathname = "/signup")
+                    router.push("/dashboard");
             }
         }
 
         checkAddressExists();
 
-        if (!ethProvider.selectedAddress) {
+        if (ethProvider.selectedAddress) {
             setIsConnected(true);
         }
     }, []);
 
     const requestConnect = async () => {
-        const accounts = await ethProvider.request({ method: "eth_requestAccounts" });
+        var accounts;
+        try {
+            accounts = await ethProvider.request({ method: "eth_requestAccounts" });
+        } catch (e) {
+            console.log(e);
+            return;
+        }
+
         const account = accounts[0];
+        setIsConnected(true);
         // Check if account exists on the backend
 
         try {
             const res = await axios.get(`${apiRoot}/account/${account}`);
         } catch (e) {
-            router.push('/create');
+            router.push('/signup');
         }
+
+        return account;
     }
     
     return {

@@ -2,36 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { EthProvider } from '../../interfaces/EthProvider';
 import SignUpForm from '../../components/SignUpForm';
+import useWallet from '../../hooks/useWallet';
 
 const Index = () => {
     const router = useRouter();
-
-    // get wallet id
-    const [walletIdLoaded, setWalletIdLoaded] = useState<boolean>();
-    const [walletId, setWalletId] = useState<string>();
-    useEffect(() => {
-        const fetchUser = async() => {
-            var accounts = await ((window as any).ethereum as EthProvider).request( {method: 'eth_requestAccounts'});
-            if (accounts) {
-                return accounts[0]
-            }
-        }
-        fetchUser().then(res => {
-            setWalletId(res);
-            setWalletIdLoaded(true);
-            console.log(res);
-        });
-    }, [])
-
+    const { ethProviderPresent, isConnected, walletInfo } = useWallet();
     
-    return (
-        (walletIdLoaded ? 
+    if (ethProviderPresent && isConnected)
+        return (
             <div>
-                <SignUpForm walletId={walletId.toLowerCase()}/>
+                <SignUpForm walletId={walletInfo.selectedAddress}/>
             </div>
-            :
-            <h1>Loading...</h1>
         )
+
+    return (
+        <h1>Loading..</h1>
     )
 }   
 

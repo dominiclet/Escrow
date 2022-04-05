@@ -5,7 +5,12 @@ import useWallet from '../hooks/useWallet';
 
 export default function Home() {
     const router = useRouter();
-    const { ethProvider , requestConnect } = useWallet();
+    const { ethProvider , requestConnect, isConnected } = useWallet();
+
+    useEffect(() => {
+        if (isConnected)
+            router.push("/dashboard");
+    }, [isConnected]);
 
     return (
         <div className='flex h-screen w-screen bg-zinc-300 items-center justify-center'>
