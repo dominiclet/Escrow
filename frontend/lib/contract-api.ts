@@ -17,22 +17,23 @@ export async function createContractApi(contractAddress: string, fromAddress: st
     return true;
 }
 
-export async function offerContractApi(callerAddress: string, contractAddress: string): Promise<boolean> {
+export async function offerContractApi(fromAddress: string, contractAddress: string): Promise<boolean> {
     try {
-        axios.post(`${apiRoot}/contract/offer`, {
-            callerAddress, 
+        const contract = axios.post(`${apiRoot}/contract/offer`, {
+            fromAddress, 
             contractAddress,
         });
+        console.log(contract);
     } catch (e) {
         console.log(e);
         return false;
     } return true;
 }
 
-export async function withdrawOfferApi(callerAddress: string, contractAddress: string): Promise<boolean> {
+export async function withdrawOfferApi(fromAddress: string, contractAddress: string): Promise<boolean> {
     try {
         axios.post(`${apiRoot}/contract/withdrawOffer`, {
-            callerAddress, 
+            fromAddress, 
             contractAddress,
         });
     } catch (e) {
@@ -41,10 +42,10 @@ export async function withdrawOfferApi(callerAddress: string, contractAddress: s
     } return true;
 }
 
-export async function acceptOfferApi(callerAddress: string, contractAddress: string): Promise<boolean> {
+export async function acceptOfferApi(fromAddress: string, contractAddress: string): Promise<boolean> {
     try {
         axios.post(`${apiRoot}/contract/accept`, {
-            callerAddress, 
+            fromAddress, 
             contractAddress,
         });
     } catch (e) {
@@ -53,10 +54,10 @@ export async function acceptOfferApi(callerAddress: string, contractAddress: str
     } return true;
 }
 
-export async function triggerDisputeApi(callerAddress: string, contractAddress: string): Promise<boolean> {
+export async function triggerDisputeApi(fromAddress: string, contractAddress: string): Promise<boolean> {
     try {
         axios.post(`${apiRoot}/contract/triggerDispute`, {
-            callerAddress, 
+            fromAddress, 
             contractAddress,
         });
     } catch (e) {
@@ -65,10 +66,10 @@ export async function triggerDisputeApi(callerAddress: string, contractAddress: 
     } return true;
 }
 
-export async function completeContractApi(callerAddress: string, contractAddress: string): Promise<boolean> {
+export async function completeContractApi(fromAddress: string, contractAddress: string): Promise<boolean> {
     try {
         axios.post(`${apiRoot}/contract/completeContract`, {
-            callerAddress, 
+            fromAddress, 
             contractAddress,
         });
     } catch (e) {

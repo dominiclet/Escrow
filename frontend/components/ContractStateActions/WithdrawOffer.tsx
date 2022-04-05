@@ -1,10 +1,9 @@
 import {Contract} from '../../interfaces/DashboardDetails';
-import {offerContractApi} from '../../lib/contract-api';
+import {withdrawOfferApi} from '../../lib/contract-api';
 import { useEffect, useState } from "react";
 import { EthProvider } from "../../interfaces/EthProvider";
 import axios from "axios";
-import { maticToWeiInHex } from "../../lib/blockchain";
-import ConfirmTransactionModal from "../../components/ConfirmTransactionPopup/ConfirmTransactionModal";
+import ConfirmTransactionModal from "../ConfirmTransactionPopup/ConfirmTransactionModal";
 import { useRef } from "react";
 import {apiRoot} from "../../config";
 
@@ -12,7 +11,7 @@ interface Props {
     contract: Contract;
 }
 
-const Offer = (props:Props) => {
+const WithdrawOffer = (props:Props) => {
     const [ethProvider, setEthProvider] = useState<EthProvider|null>();
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const transaction = useRef<string|null>();
@@ -22,14 +21,12 @@ const Offer = (props:Props) => {
         setEthProvider(ethProv);
     }, []);
 
-    const callOffer = async () => {
-        const res = await axios.post(`${apiRoot}/blockchain/offer`, {
+    const callWithdraw = async () => {
+        const res = await axios.post(`${apiRoot}/blockchain/withdrawOffer`, {
             callerAddress: ethProvider.selectedAddress,
             contractAddress: props.contract.address,
-            expiryTime: 1659135249,
-            value: maticToWeiInHex((document.getElementById("offeramt") as HTMLInputElement).value),
         });
-        const tx = res.data;
+        const tx = res. data;
         console.log(tx);
         const txHash = await ethProvider.request({
             method: 'eth_sendTransaction',
@@ -47,35 +44,32 @@ const Offer = (props:Props) => {
 
     if (ethProvider) {
         return (
-            <>
-                <div className="flex justify-center m-5">
-                    <p className="flex self-center">Input offer amount: </p>
-                    <input className="m-3 outline-0 border rounded p-1" id="offeramt" placeholder={"amount"} />
-                </div>     
+            <> 
                 <div className="flex justify-center">
                     <button
-                        className="mb-5 text-black bg-green-200
-                        hover:bg-green-400 focus:ring-4 focus:ring-transparent 
+                        className="mb-5 text-black bg-red-200
+                        hover:bg-red-400 focus:ring-4 focus:ring-transparent 
                         font-medium rounded-lg text-base px-5 py-3 w-full sm:w-auto text-center"
-                        onClick={callOffer}
+                        onClick={callWithdraw}
                         >
-                        Offer
+                        Withdraw Offer
                     </button>               
                 </div>
                 <ConfirmTransactionModal 
                     provider={ethProvider} 
-                    updateBackend={offerContractApi} 
+                    updateBackend={withdrawOfferApi} 
                     txHash={transaction} 
                     isOpen={modalIsOpen} 
                     onRequestClose={() => {setModalIsOpen(false)}} 
                     contractAddress={props.contract.address}
-                    fromAddress={props.contract.payer.walletId}
+                    fromAddress={ethProvider.selectedAddress}
                 />
             </>
 
         )
     }
     return (<div>Loading...</div>)
+
 }
 
-export default Offer
+export default WithdrawOffer

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { apiRoot } from '../../../config';
 import {Contract, Account, ContractState} from '../../../interfaces/DashboardDetails';
 import { EthProvider } from '../../../interfaces/EthProvider';
+import useWallet from "../../../hooks/useWallet";
 
 const Contract =  () => {
 

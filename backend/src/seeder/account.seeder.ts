@@ -38,7 +38,7 @@ export class SeederService implements OnApplicationBootstrap {
             }
         ];
         const alaindt = this.accountRepository.create({
-            walletId: "0x1234567890000000000000000000000000000",
+            walletId: "0x5Ef041d84EFD549eFD5410cc6b9d24Fb9819b9bE".toLowerCase(),
             username: "Alaint Richardt",
         });
         const djordje = this.accountRepository.create({

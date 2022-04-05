@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { apiRoot } from '../config';
 import {Contract, Account, ContractState} from '../interfaces/DashboardDetails';
 import DisplayButtons from '../components/ContractStateActions/DisplayButtons';
+import {useRouter} from 'next/router';
 
 interface Props {
     walletId: string;
@@ -20,6 +21,10 @@ const counterPartyName = (user: Account, contract: Contract): string => {
 }
 
 const Contract = (props:Props) => {
+    const router = useRouter();
+    const returnDash = () => {
+        router.push("/dashboard");
+    }
 
     // get user account
     const [user, setUser] = useState<Account>();
@@ -27,6 +32,15 @@ const Contract = (props:Props) => {
         axios.get(`${apiRoot}/account/${props.walletId}`, {})
         .then(res => {
             setUser(res.data);
+        })
+    }, [])
+
+    // get expiry time - need convert to date
+    const [expiry, setExpiry] = useState<number>();
+    useEffect(()=> {
+        axios.get(`${apiRoot}/blockchain/${props.contract.address}/expiryTime`, {})
+        .then(res => {
+            setExpiry(res.data);
         })
     }, [])
 
@@ -91,7 +105,7 @@ const Contract = (props:Props) => {
                                         </div>
                                     </td>                    
                                     <td className="px-4 py-3 text-xs">
-                                        <span className="px-2 py-1 font-medium leading-tight text-green-700 bg-green-20 rounded-sm">{props.contract.expiry}</span>
+                                        <span className="px-2 py-1 font-medium leading-tight text-green-700 bg-green-20 rounded-sm">{expiry}</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -112,6 +126,16 @@ const Contract = (props:Props) => {
                             <DisplayButtons user={user} contract={props.contract}/>            
                         </div>
                     </div>
+                    <div>
+                        <button
+                            className="mb-5 ml-10 text-black bg-teal-100
+                            hover:bg-teal-500 focus:ring-4 focus:ring-transparent 
+                            font-medium rounded-lg text-base px-5 py-3 w-full sm:w-auto text-center"
+                            onClick = {returnDash}
+                            >
+                                Return to Dashboard
+                            </button>
+                        </div>
                 </div>
             </div>
         )

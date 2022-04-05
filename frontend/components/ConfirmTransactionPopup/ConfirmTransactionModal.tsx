@@ -18,7 +18,7 @@ interface Props {
     onRequestClose: () => void,
     // Transaction hash is passed via a ref 
     txHash: MutableRefObject<string|null>,
-    updateBackend: (contractAddress: string, fromAddress: string, toAddress?: string, contractName?: string) => Promise<boolean>;
+    updateBackend?: (contractAddress: string, fromAddress: string, toAddress?: string, contractName?: string) => Promise<boolean>;
     provider: EthProvider;
     // Only used for contract creation
     contractBackendParams?: MutableRefObject<UpdateContractBackendParams>,
@@ -40,17 +40,20 @@ const ConfirmTransactionModal = (props: Props) => {
 
     // Callback function that updates backend 
     const update = async (contractAddress: string) => {
-        var success;
-        if (props.contractBackendParams) {
-            const { fromAddress, toAddress, contractName } = props.contractBackendParams.current;
-            success = await props.updateBackend(contractAddress, fromAddress, toAddress, contractName);
-        } else {
-            success = await props.updateBackend(props.contractAddress, props.fromAddress);
+        var success: boolean;
+        if (props.updateBackend) {
+            if (props.contractBackendParams) {
+                const { fromAddress, toAddress, contractName } = props.contractBackendParams.current;
+                success = await props.updateBackend(contractAddress, fromAddress, toAddress, contractName);
+            } else {
+                success = await props.updateBackend(props.fromAddress, props.contractAddress);
+            }
+            if (success) 
+                setTransactionComplete(true);
+            else
+                setError(true);            
         }
-        if (success) 
-            setTransactionComplete(true);
-        else
-            setError(true);
+        setTransactionComplete(true);
     }
 
     const onModalOpen = () => {

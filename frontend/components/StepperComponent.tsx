@@ -8,7 +8,7 @@ interface Props {
 const StepperComponent = (props: Props) => {
         return (
         <div className=''>
-            <Stepper steps={[{ label: 'Awaiting Offer' }, { label: 'Awaiting Acceptance' }, { label: 'Awaiting Performance' }, { label: 'Dispute'}, { label: 'Complete' }]} 
+            <Stepper steps={[{ label: 'Awaiting Offer' }, { label: 'Awaiting Acceptance' }, { label: 'Awaiting Performance' }, { label: 'Complete'}, { label: 'Dispute' }]} 
             activeStep={props.state} />
         </div>
     )
