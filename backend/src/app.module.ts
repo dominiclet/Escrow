@@ -14,16 +14,13 @@ import { SeederModule } from './seeder/seeder.module';
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
+      url: process.env.DATABASE_URL, 
       type: 'postgres',
-      host: 'localhost', // docker:db, local: localhost
-      port: 5433, // docker: 5432, local: depends on your system (5433)
-      username: 'postgres',
-      password: 'postgres',
       database: 'db',
-      synchronize: true,
+      synchronize: false,
       entities: [Contract, Account],
+      autoLoadEntities: true,
     }),
-    SeederModule,
     AccountModule,
     ContractModule,
     BlockchainModule,
