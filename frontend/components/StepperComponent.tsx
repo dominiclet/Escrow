@@ -9,7 +9,8 @@ const StepperComponent = (props: Props) => {
     if (props.state == 4) {
         return (
             <div>
-                <span className="px-2 py-1 font-medium leading-tight text-green-700 bg-green-100 rounded-sm text-center">Disputed</span>
+                <Stepper steps={[{label: 'Disputed'}]} 
+                activeStep={0} />               
             </div>
         )
     }

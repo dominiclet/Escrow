@@ -13,6 +13,13 @@ interface Props {
 }
 
 const Offer = (props:Props) => {
+
+    // get date and add 6 months for default contract expiry date
+    var date = new Date()
+    date.setMonth(date.getMonth() + 6)
+    var unixDate:number = Math.floor(date.getTime() / 1000)
+    console.log(unixDate)
+
     const [ethProvider, setEthProvider] = useState<EthProvider|null>();
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const transaction = useRef<string|null>();
@@ -26,7 +33,7 @@ const Offer = (props:Props) => {
         const res = await axios.post(`${apiRoot}/blockchain/offer`, {
             callerAddress: ethProvider.selectedAddress,
             contractAddress: props.contract.address,
-            expiryTime: 1659135249,
+            expiryTime: unixDate,
             value: maticToWeiInHex((document.getElementById("offeramt") as HTMLInputElement).value),
         });
         const tx = res.data;
