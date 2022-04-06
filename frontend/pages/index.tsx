@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useWeb3 } from "@3rdweb/hooks";
 import useWallet from '../hooks/useWallet';
 
 export default function Home() {
