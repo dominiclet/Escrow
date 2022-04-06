@@ -21,8 +21,11 @@ const useWallet = () => {
         const ethProvider = (window as any).ethereum as EthProvider;
         setEthProvider(ethProvider);
 
-        if (!ethProvider) 
+        // Did not detect ethereum provider
+        if (!ethProvider) {
+            router.push("/");
             return;
+        }
 
         setEthProviderPresent(true);
         setWalletInfo({
@@ -38,7 +41,6 @@ const useWallet = () => {
                     // If current page is registration page, redirect to dashbaord
                     if (res.status == 200) {
                         if (router.pathname = "/signup") {
-                            console.log("LKSDFJ")
                             router.push("/dashboard");
                         }
                         setIsRegistered(true);
@@ -57,6 +59,9 @@ const useWallet = () => {
 
         if (ethProvider.selectedAddress) {
             setIsConnected(true);
+        } else {
+            // No access to wallet address
+            router.push("/");
         }
     }, []);
 
