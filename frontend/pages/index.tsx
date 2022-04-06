@@ -21,6 +21,9 @@ export default function Home() {
                     onClick={() => requestConnect()}>
                         <img src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/a9q9vb3gzdnibfegyyma"/>
                 </button>
+                <button type="button" className='flex rounded-xl bg-cyan-700 text-white p-2 justify-center mt-5' onClick={() => requestConnect()}>
+                                Log In / Sign Up
+                </button>
             </div>
         </div>
     );
