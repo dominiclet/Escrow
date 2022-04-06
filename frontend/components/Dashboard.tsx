@@ -39,43 +39,50 @@ var currentUser = John
 
 interface Props {
     walletId: string;
+    isConnected: boolean;
+    accountData: Account;
 }
 
 const Dashboard = (props: Props) => {
     const router = useRouter();
+    const { isConnected, accountData } = props;
+
+    // get user account
+    const [userLoaded, setUserLoaded] = useState<boolean>();
+    const [user, setUser] = useState<Account>();
+    
+    useEffect(() => {
+        if (accountData) {
+            setUser(accountData);
+            setUserLoaded(true);
+        }
+    }, [accountData])
 
     // get payer contracts 
     const [payerDataLoaded, setPayerDataLoaded] = useState<boolean>();
     const [payerContractData, setPayerContractData] = useState<Array<Contract>>();
     useEffect(() => {
-        axios.get(`${apiRoot}/contract/payer/${props.walletId}`, {})
-        .then(res => {
-            setPayerContractData(res.data);
-            setPayerDataLoaded(true);
-        })
-    }, [])
+        if (isConnected) {
+            axios.get(`${apiRoot}/contract/payer/${props.walletId}`, {})
+            .then(res => {
+                setPayerContractData(res.data);
+                setPayerDataLoaded(true);
+            })
+        }
+    }, [isConnected])
     
     // get payee contracts
     const [payeeDataLoaded, setPayeeDataLoaded] = useState<boolean>();
     const [payeeContractData, setPayeeContractData] = useState<Array<Contract>>();
     useEffect(() => {
-        axios.get(`${apiRoot}/contract/payee/${props.walletId}`, {})
-        .then(res => {
-            setPayeeContractData(res.data);
-            setPayeeDataLoaded(true);
-        })
-    }, [])
-
-    // get user account
-    const [userLoaded, setUserLoaded] = useState<boolean>();
-    const [user, setUser] = useState<Account>();
-    useEffect(() => {
-        axios.get(`${apiRoot}/account/${props.walletId}`, {})
-        .then(res => {
-            setUser(res.data);
-            setUserLoaded(true);
-        })
-    }, [])
+        if (isConnected) {
+            axios.get(`${apiRoot}/contract/payee/${props.walletId}`, {})
+            .then(res => {
+                setPayeeContractData(res.data);
+                setPayeeDataLoaded(true);
+            })
+        }
+    }, [isConnected])
 
     // logout button function
     

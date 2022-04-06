@@ -2,6 +2,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { apiRoot } from "../config";
+import { Account } from "../interfaces/DashboardDetails";
 import { EthProvider } from "../interfaces/EthProvider";
 
 interface WalletInfo {
@@ -15,6 +16,7 @@ const useWallet = () => {
     const [isConnected, setIsConnected] = useState<boolean>(false);
     const [isRegistered, setIsRegistered] = useState<boolean>(false);
     const [walletInfo, setWalletInfo] = useState<WalletInfo|null>();
+    const [accountData, setAccountData] = useState<Account|null>();
     const router = useRouter();
 
     useEffect(() => {
@@ -44,12 +46,13 @@ const useWallet = () => {
                             router.push("/dashboard");
                         }
                         setIsRegistered(true);
+                        setAccountData(res.data);
                     }
                 } catch (e) {
                     console.log(e);
                     if (e.response.status == 404 && router.pathname != "/signup")
                         router.push("/signup");
-                    return false;
+                    return;
                 }
 
             }
@@ -63,7 +66,7 @@ const useWallet = () => {
             // No access to wallet address
             router.push("/");
         }
-    }, []);
+    }, [isConnected]);
 
     const requestConnect = async () => {
         var accounts;
@@ -94,6 +97,7 @@ const useWallet = () => {
         walletInfo,
         isConnected,
         isRegistered,
+        accountData,
     }
 }
 export default useWallet;
