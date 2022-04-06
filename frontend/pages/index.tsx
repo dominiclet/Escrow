@@ -12,7 +12,7 @@ export default function Home() {
     }, [isConnected, isRegistered]);
 
     return (
-        <div className='flex h-screen w-screen bg-zinc-300 items-center justify-center'>
+        <div className='flex h-full w-full bg-zinc-300 items-center justify-center'>
             <div className="flex flex-col w-screen h-96 w-96 items-center justify-center bg-white">
                 <h1 className="flex justify-center font-bold text-2xl text-center text-stone-700 w-3/4">Login/Sign Up</h1>
                 <p className='text-neutral-400 mt-1 mb-5'>Connect your Metamask to login or sign up!</p>

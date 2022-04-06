@@ -41,11 +41,6 @@ const Test = () => {
             contractName: (document.getElementById("name") as HTMLInputElement).value,
         }
         popup();
-        
-        // Update database
-    }
-
-    const createContractUpdateBackend = async (contractAddress) => {
     }
 
     const callOffer = async () => {
