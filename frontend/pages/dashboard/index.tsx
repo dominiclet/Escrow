@@ -1,7 +1,5 @@
-import { useEffect, useState } from 'react';
 import Dashboard from '../../components/Dashboard'
 import useWallet from '../../hooks/useWallet';
-import { EthProvider } from '../../interfaces/EthProvider';
 
 const Index = () => {
 
@@ -10,7 +8,7 @@ const Index = () => {
 
     return (
         (walletInfo && isConnected ? 
-            <div>
+            <div className="w-full h-screen">
                 <Dashboard accountData={accountData} isConnected={isConnected} walletId={walletInfo.selectedAddress.toLowerCase()}/>
             </div>
             :
