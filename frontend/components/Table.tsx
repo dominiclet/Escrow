@@ -12,11 +12,11 @@ const stateColourGreen = (state: ContractState): boolean => {
 }
 
 const counterParty = (user: Account, contract: Contract): string => {
-    return user === contract.payee ? contract.payer.username : contract.payee.username;
+    return user.username === contract.payee.username ? contract.payer.username : contract.payee.username;
 }
 
 const contractStateDisplay = (state: ContractState): string => {
-    var arr = ["Awaiting Offer", "Awaiting Acceptance", "Awaiting Performance", "Complete"];
+    var arr = ["Awaiting Offer", "Awaiting Acceptance", "Awaiting Performance", "Complete", "Disputed"];
     return arr[state];
 }
 
@@ -27,18 +27,6 @@ const Table = (props: Props) => {
     const view = (address:string) => {
         router.push(`/contract/${address}`)
     };
-
-    // filter contracts depending on whether table is to show user as payer or payee
-    /*
-    const filterTable = () => {
-        if (props.role === "Service Provider") {
-            return props.contractDetails.filter(contract => contract.payee === props.user)
-        }
-        else {
-            return props.contractDetails.filter(contract => contract.payer === props.user)
-        }
-    }
-    */
 
     return (
         <div>

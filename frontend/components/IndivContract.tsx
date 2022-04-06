@@ -44,13 +44,39 @@ const Contract = (props:Props) => {
         })
     }, [])
 
+
+    const getExpiry = (expiry: number): string => {
+        if (!expiry) {
+            if (props.contract.state === ContractState.A_OFFER) {
+                return "Not available until offer has been made"
+            } else {
+                return "Contract completed"
+            }
+        } 
+            
+        var date = new Date(expiry * 1000); 
+        return date.toLocaleDateString("en-GB", {
+            day: 'numeric', month: 'short', year: 'numeric'
+        }).replace(/ /g, '-');
+    }
+
+    const isExpired = (expiry: number): boolean => {
+        if (expiry) {
+            var date:Date = new Date();
+            date.setMonth(date.getMonth() + 6);
+            var unixDate:number = Math.floor(date.getTime() / 1000);
+            return expiry < unixDate
+        }
+    }
+    console.log(isExpired(expiry));
+
     return (
         ((user === undefined) ? 
             <div>
                 <h1>Loading User Data...</h1>
             </div>
             :
-            <div className="flex h-screen w-screen bg-background">
+            <div className="flex h-full w-full bg-background">
                 <div className="flex flex-col w-screen m-10">
                     <div className="flex flex-row flow-root p-10">
                         <h1 className="float-left font-bold text-xl">Contract Overview</h1>
@@ -105,7 +131,7 @@ const Contract = (props:Props) => {
                                         </div>
                                     </td>                    
                                     <td className="px-4 py-3 text-xs">
-                                        <span className="px-2 py-1 font-medium leading-tight text-green-700 bg-green-20 rounded-sm">{expiry}</span>
+                                        <span className="px-2 py-1 font-medium leading-tight text-green-700 bg-green-20 rounded-sm">{getExpiry(expiry)}</span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -123,7 +149,7 @@ const Contract = (props:Props) => {
                             <div className="px-4 py-3">
                                 <p className="justify-center font-semibold text-black font-semibold">Actions to be Taken</p>
                             </div>        
-                            <DisplayButtons user={user} contract={props.contract}/>            
+                            <DisplayButtons user={user} contract={props.contract} isExpired={isExpired(expiry)}/>            
                         </div>
                     </div>
                     <div>

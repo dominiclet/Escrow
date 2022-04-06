@@ -21,10 +21,13 @@ const TriggerDispute = (props:Props) => {
     }, []);
 
     const callFunc = async () => {
+        var date = new Date((document.getElementById("expiry") as HTMLInputElement).value)
+        var unixDate:number = Math.floor(date.getTime() / 1000)
+
         const res = await axios.post(`${apiRoot}/blockchain/extendExpiry`, {
             callerAddress: ethProvider.selectedAddress,
             contractAddress: props.contract.address,
-            proposedExpiry: (document.getElementById("expiry") as HTMLInputElement).value,
+            proposedExpiry: unixDate,
         });
         const tx = res. data;
         console.log(tx);
@@ -47,7 +50,7 @@ const TriggerDispute = (props:Props) => {
             <>
                 <div className="flex justify-center m-5">
                     <p className="flex self-center">Input expiry extention time: </p>
-                    <input className="m-3 outline-0 border rounded p-1" id="expiry" placeholder={"amount"} />
+                    <input type="date" className="m-3 outline-0 border rounded p-1" id="expiry" />
                 </div>     
                 <div className="flex justify-center">
                     <button

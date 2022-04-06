@@ -10,13 +10,14 @@ import ExtendExpiry from './ExtendExpiry';
 interface Props {
     user: Account;
     contract: Contract;
+    isExpired: boolean;
 }
 
 const DisplayButtons = (props: Props) => {
 
     const role = ():string => {
         if (props.user.username === props.contract.payee.username) {
-            return "payee" // change back
+            return "payee" 
         } else return "payer"
     }
 
@@ -66,19 +67,32 @@ const DisplayButtons = (props: Props) => {
                 </div>
             )
         } else {
-            return (
-                <div className="grid grid-cols-3 justify-center">
-                    <div className="justify-self-center self-center">
-                        <ExpiredWithdraw contract={props.contract}/>
+            if (props.isExpired) {
+                return (
+                    <div className="grid grid-cols-3 justify-center">
+                        <div className="justify-self-center self-center">
+                            <ExpiredWithdraw contract={props.contract}/>
+                        </div>
+                        <div className="justify-self-center self-center">
+                            <TriggerDispute contract={props.contract}/>
+                        </div>
+                        <div>
+                            <ExtendExpiry contract={props.contract}/>
+                        </div>
                     </div>
-                    <div className="justify-self-center self-center">
-                        <TriggerDispute contract={props.contract}/>
+                )
+            } else {
+                return (
+                    <div className="grid grid-cols-2 justify-center">
+                        <div className="justify-self-center self-center">
+                            <TriggerDispute contract={props.contract}/>
+                        </div>
+                        <div>
+                            <ExtendExpiry contract={props.contract}/>
+                        </div>
                     </div>
-                    <div>
-                        <ExtendExpiry contract={props.contract}/>
-                    </div>
-                </div>
-            )
+                )
+            }
         }
     } else {
         return (

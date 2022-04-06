@@ -46,16 +46,16 @@ const ExpiredWithdraw = (props:Props) => {
         return (
             <> 
                 <div className="flex justify-center m-5">
-                    <h1>This contract has exceeded its expiry date. You may withdraw the contract.</h1>
+                    <h1>This contract has exceeded its expiry date. You may now mark the contract as complete.</h1>
                 </div>
                 <div className="flex justify-center">
                     <button
-                        className="mb-5 text-black bg-red-200
-                        hover:bg-red-400 focus:ring-4 focus:ring-transparent 
+                        className="mb-5 text-black bg-green-200
+                        hover:bg-green-400 focus:ring-4 focus:ring-transparent 
                         font-medium rounded-lg text-base px-5 py-3 w-full sm:w-auto text-center"
                         onClick={callWithdraw}
                         >
-                        Expired Withdraw
+                        Move to Complete
                     </button>               
                 </div>
                 <ConfirmTransactionModal 

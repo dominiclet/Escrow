@@ -86,7 +86,7 @@ const Dashboard = (props: Props) => {
 
     return (
         (payeeDataLoaded && payerDataLoaded && userLoaded ?
-            <div className="flex h-screen w-screen bg-background">
+            <div className="flex h-full w-full bg-background">
                 <div className="flex flex-col w-screen m-10">
                     <div className="flex flex-row flow-root p-10">
                         <p className="float-left font-bold text-xl">Overview</p>
