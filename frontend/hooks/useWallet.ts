@@ -33,15 +33,15 @@ const useWallet = () => {
             if (ethProvider.selectedAddress) {
                 try {
                     const res = await axios.get(`${apiRoot}/account/${ethProvider.selectedAddress}`);
+                    // If current page is registration page, redirect to dashbaord
+                    if (router.pathname = "/signup")
+                        router.push("/dashboard");
                 } catch (e) {
                     console.log(e);
                     if (e.response.status == 404)
                         router.push("/signup");
                 }
 
-                // If current page is registration page, redirect to dashbaord
-                if (router.pathname = "/signup")
-                    router.push("/dashboard");
             }
         }
 
