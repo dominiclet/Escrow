@@ -13,6 +13,7 @@ const useWallet = () => {
     const [ethProvider, setEthProvider] = useState<EthProvider|null>();
     const [ethProviderPresent, setEthProviderPresent] = useState<boolean>(false);
     const [isConnected, setIsConnected] = useState<boolean>(false);
+    const [isRegistered, setIsRegistered] = useState<boolean>(false);
     const [walletInfo, setWalletInfo] = useState<WalletInfo|null>();
     const router = useRouter();
 
@@ -32,14 +33,21 @@ const useWallet = () => {
         const checkAddressExists = async () => {
             if (ethProvider.selectedAddress) {
                 try {
+                    console.log('here')
                     const res = await axios.get(`${apiRoot}/account/${ethProvider.selectedAddress}`);
                     // If current page is registration page, redirect to dashbaord
-                    if (router.pathname = "/signup")
-                        router.push("/dashboard");
+                    if (res.status == 200) {
+                        if (router.pathname = "/signup") {
+                            console.log("LKSDFJ")
+                            router.push("/dashboard");
+                        }
+                        setIsRegistered(true);
+                    }
                 } catch (e) {
                     console.log(e);
-                    if (e.response.status == 404)
+                    if (e.response.status == 404 && router.pathname != "/signup")
                         router.push("/signup");
+                    return false;
                 }
 
             }
@@ -80,6 +88,7 @@ const useWallet = () => {
         requestConnect,
         walletInfo,
         isConnected,
+        isRegistered,
     }
 }
 export default useWallet;
