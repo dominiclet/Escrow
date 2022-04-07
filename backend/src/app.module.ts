@@ -17,7 +17,10 @@ import { SeederModule } from './seeder/seeder.module';
       url: process.env.DATABASE_URL, 
       type: 'postgres',
       database: 'db',
-      synchronize: false,
+      ssl: {
+        rejectUnauthorized: false,
+      },
+      synchronize: true,
       entities: [Contract, Account],
       autoLoadEntities: true,
     }),
