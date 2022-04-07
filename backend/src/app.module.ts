@@ -20,7 +20,7 @@ import { SeederModule } from './seeder/seeder.module';
       ssl: {
         rejectUnauthorized: false,
       },
-      synchronize: false,
+      synchronize: true,
       entities: [Contract, Account],
       autoLoadEntities: true,
     }),
