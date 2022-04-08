@@ -3,7 +3,7 @@ import {useRouter} from 'next/router';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { apiRoot } from '../../../config';
-import {Contract, Account, ContractState} from '../../../interfaces/DashboardDetails';
+import {Contract} from '../../../interfaces/DashboardDetails';
 import { EthProvider } from '../../../interfaces/EthProvider';
 import useWallet from "../../../hooks/useWallet";
 
