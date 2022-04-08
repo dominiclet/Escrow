@@ -3,7 +3,6 @@ import { Contract } from "./contract.entity";
 import { ContractService } from "./contract.service";
 import { CreateContractDto } from "./dto/create-contract.dto";
 import { GenericContractCallDto } from "./dto/generic-contract-call.dto";
-
 @Controller('contract')
 export class ContractController {
     constructor(private contractService: ContractService) {}
