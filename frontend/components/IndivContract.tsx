@@ -65,7 +65,7 @@ const Contract = (props:Props) => {
             var date:Date = new Date();
             date.setMonth(date.getMonth() + 6);
             var unixDate:number = Math.floor(date.getTime() / 1000);
-            return expiry < unixDate
+            return unixDate < expiry
         }
     }
     console.log(isExpired(expiry));
