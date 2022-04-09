@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ReactModal from "react-modal";
 import styles from "../../styles/TransactionModal.module.css";
 import { MutableRefObject } from "react";
@@ -18,18 +18,20 @@ interface Props {
     onRequestClose: () => void,
     // Transaction hash is passed via a ref 
     txHash: MutableRefObject<string|null>,
-    updateBackend?: (contractAddress: string, fromAddress: string, toAddress?: string, contractName?: string) => Promise<boolean>;
-    provider: EthProvider;
+    updateBackend?: (contractAddress: string, fromAddress: string, toAddress?: string, contractName?: string) => Promise<boolean>,
+    provider: EthProvider,
     // Only used for contract creation
     contractBackendParams?: MutableRefObject<UpdateContractBackendParams>,
     // The following two props must be provided for calls other than contract creation
-    contractAddress?: string;
-    fromAddress?: string;
+    contractAddress?: string,
+    fromAddress?: string,
 }
 
 const ConfirmTransactionModal = (props: Props) => {
     const [transactionComplete, setTransactionComplete] = useState<boolean>(false);
     const [error, setError] = useState<boolean>(false);
+    // Only used for contract creation
+    const [contractAddress, setContractAddress] = useState<string|null>();
 
     // Wrapper around onRequestClose to disallow user from closing before transaction goes through
     const closeModal = () => {
@@ -40,7 +42,11 @@ const ConfirmTransactionModal = (props: Props) => {
 
     // Callback function that updates backend 
     const update = async (contractAddress: string) => {
+        // Set contract address
+        setContractAddress(contractAddress);
+
         var success: boolean;
+
         if (props.updateBackend) {
             if (props.contractBackendParams) {
                 const { fromAddress, toAddress, contractName } = props.contractBackendParams.current;
@@ -82,7 +88,7 @@ const ConfirmTransactionModal = (props: Props) => {
                             callback={update}
                         /> 
                         : 
-                            <TransactionComplete />
+                            <TransactionComplete contractAddress={contractAddress}/>
             }
         </ReactModal>
     );

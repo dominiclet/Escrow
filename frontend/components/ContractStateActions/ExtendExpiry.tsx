@@ -10,7 +10,7 @@ interface Props {
     contract: Contract;
 }
 
-const TriggerDispute = (props:Props) => {
+const ExtendExpiry = (props:Props) => {
     const [ethProvider, setEthProvider] = useState<EthProvider|null>();
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
     const transaction = useRef<string|null>();
@@ -75,4 +75,4 @@ const TriggerDispute = (props:Props) => {
     return (<div>Loading...</div>)
 }
 
-export default TriggerDispute
+export default ExtendExpiry 
