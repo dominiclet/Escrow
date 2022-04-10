@@ -20,7 +20,7 @@ export default function Home() {
                     onClick={() => requestConnect()}>
                         <img src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/a9q9vb3gzdnibfegyyma"/>
                 </button>
-                <p className="text-center">Please follow the instructions <a className="text-blue-500 underline hover:text-blue-800" href="https://github.com/dominiclet/Escrow/tree/main/instructions" target="_blank">here</a> to set up your Metamask wallet for the Polygon testnet.</p>
+                <p className="text-center">Please follow the instructions <a rel="noreferrer" className="text-blue-500 underline hover:text-blue-800" href="https://github.com/dominiclet/Escrow/tree/main/instructions" target="_blank">here</a> to set up your Metamask wallet for the Polygon testnet.</p>
                 <button type="button" className='flex rounded-xl bg-cyan-700 text-white p-2 justify-center mt-5' onClick={() => requestConnect()}>
                                 Log In / Sign Up
                 </button>
