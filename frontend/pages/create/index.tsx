@@ -92,6 +92,7 @@ const Create = () => {
           <input
             id="name"
             type="text"
+            required
             placeholder="Contract name"
             className="ml-4 my-3 w-full border-none bg-transparent outline-none focus:outline-none"
             />

@@ -62,6 +62,9 @@ const ExtendExpiry = (props:Props) => {
                         Extend Expiry
                     </button>               
                 </div>
+                <div className="flex justify-content">
+                    <p className="flex self-center">Note: extension of expiry will only be confirmed when both parties input the same expiry date</p>
+                </div>
                 <ConfirmTransactionModal 
                     provider={ethProvider} 
                     txHash={transaction} 

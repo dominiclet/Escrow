@@ -8,7 +8,7 @@ const Index = () => {
 
     return (
         (walletInfo && isConnected ? 
-            <div className="w-full h-screen">
+            <div className="w-full h-full">
                 <Dashboard accountData={accountData} isConnected={isConnected} walletId={walletInfo.selectedAddress.toLowerCase()}/>
             </div>
             :

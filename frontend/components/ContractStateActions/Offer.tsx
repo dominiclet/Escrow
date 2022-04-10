@@ -15,10 +15,12 @@ interface Props {
 const Offer = (props:Props) => {
 
     // get date and add 6 months for default contract expiry date
+    /*
     var date = new Date()
     date.setMonth(date.getMonth() + 6)
     var unixDate:number = Math.floor(date.getTime() / 1000)
     console.log(unixDate)
+    */
 
     const [ethProvider, setEthProvider] = useState<EthProvider|null>();
     const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
@@ -30,6 +32,9 @@ const Offer = (props:Props) => {
     }, []);
 
     const callOffer = async () => {
+        var date = new Date((document.getElementById("expiry") as HTMLInputElement).value)
+        var unixDate:number = Math.floor(date.getTime() / 1000)
+
         const res = await axios.post(`${apiRoot}/blockchain/offer`, {
             callerAddress: ethProvider.selectedAddress,
             contractAddress: props.contract.address,
@@ -55,6 +60,10 @@ const Offer = (props:Props) => {
     if (ethProvider) {
         return (
             <>
+                <div className="flex justify-center m-5">
+                    <p className="flex self-center">Input expiry extention time: </p>
+                    <input type="date" className="m-3 outline-0 border rounded p-1" id="expiry" />
+                </div>     
                 <div className="flex justify-center m-5">
                     <p className="flex self-center">Input offer amount: </p>
                     <input className="m-3 outline-0 border rounded p-1" id="offeramt" placeholder={"amount"} />
