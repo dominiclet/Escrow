@@ -61,7 +61,7 @@ const Offer = (props:Props) => {
         return (
             <>
                 <div className="flex justify-center m-5">
-                    <p className="flex self-center">Input expiry extention time: </p>
+                    <p className="flex self-center">Input expiry date: </p>
                     <input type="date" className="m-3 outline-0 border rounded p-1" id="expiry" />
                 </div>     
                 <div className="flex justify-center m-5">
